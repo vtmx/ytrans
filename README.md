@@ -4,7 +4,7 @@ Script em bash para download de transcrições do YouTube.
 
 ## Pré-requisito(s)
 - [yt-dlp](https://github.com/yt-dlp/yt-dlp)
-- [yad](https://github.com/yt-dlp/yt-dlp)
+- [yad (para modo GUI)](https://github.com/yt-dlp/yt-dlp)
 
 ## Modo de uso
 
