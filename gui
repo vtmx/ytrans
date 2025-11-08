@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+if [[ "$1" ]]; then
+  yt_trans_file="$1"
+else
+  yt_trans_file=transcricao.pt.srt
+fi
+
+yt_trans_txt=$(awk -f format.awk "$yt_trans_file")
+
+# Clipboard line on click time cell
+clipboard() {
+  local line=$(sed -E "s/^'([[:digit:]]{2}:[[:digit:]]{2}:[[:digit:]]{2})' '(.+)'$/\1 - \2/g" <<< "$1")
+  printf "%s" "$line" | xclip -selection clipboard
+}
+export -f clipboard
+
+# # Show yad
+yad --list \
+  --title=Transcrição \
+  --editable --editable-cols=2 \
+  --search-column=2 \
+  --regex-search \
+  --dclick-action='bash -c "clipboard \"%s\""' \
+  --column=Tempo --column=Frase \
+  < <(awk -F ' - ' '{ print $1 "\n" $2 }' <<< $yt_trans_txt)

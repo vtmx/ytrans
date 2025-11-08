@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+# Youtube download transcript
+
+set -e
+
+# Check url
+if [[ $1 ]]; then
+  yt_url="$1"
+  yt_trans_file=transcricao.pt.srt
+else
+  echo 'erro: no url' >&2
+  exit 1
+fi
+
+if [[ ! -f "$yt_trans_file" ]]; then
+  # Get transcript
+  yt-dlp \
+    --skip-download \
+    --sub-format srt \
+    --sub-lang pt \
+    --write-subs \
+    --write-auto-subs \
+    --quiet \
+    --output "transcricao" \
+    "$yt_url"  
+fi
+
+yt_trans_txt=$(awk -f format.awk "$yt_trans_file")
+
+read -rp '
+Escolha uma opção:
+p) Print
+g) Gui
+s) Save
+q) Quit
+
+Opção: ' opc
+
+case "$opc" in
+  p) echo "$yt_trans_txt"                   ;;
+  g) ./gui "$yt_trans_file"                 ;;
+  s) echo "$yt_trans_txt" > transcricao.txt ;;
+  q) exit 0                                 ;;
+esac
