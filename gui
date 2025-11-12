@@ -3,7 +3,7 @@
 if [[ "$1" ]]; then
   yt_trans_file="$1"
 else
-  yt_trans_file=transcricao.pt.srt
+  yt_trans_file=transcript.pt.srt
 fi
 
 yt_trans_txt=$(awk -f format.awk "$yt_trans_file")
